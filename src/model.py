@@ -1,5 +1,6 @@
 import torch
 import os
+
 from transformers import (
     AutoModelForSeq2SeqLM,
     AutoTokenizer,
@@ -7,7 +8,7 @@ from transformers import (
     GenerationConfig,
 )
 from peft import PeftModel
-from utils import BASE_MODEL_NAME
+from utils import BASE_MODEL_NAME, BEST_PEFT_MODEL_NAME
 
 
 def load_base_model(model_name: str = BASE_MODEL_NAME):
@@ -18,7 +19,9 @@ def load_base_model(model_name: str = BASE_MODEL_NAME):
     return base_model
 
 
-def get_peft_model(base_model_name, peft_model_path):
+def load_peft_model(
+    base_model_name: str = BASE_MODEL_NAME, peft_model_path: str = BEST_PEFT_MODEL_NAME
+):
     base_model = load_base_model(base_model_name)
     peft_model = PeftModel.from_pretrained(base_model, peft_model_path)
 
@@ -54,6 +57,15 @@ def load_tokenizer(model_name: str = BASE_MODEL_NAME):
 def load_model_with_tokenizer(model_name: str = BASE_MODEL_NAME):
     model = load_base_model(model_name)
     tokenizer = load_tokenizer(model_name)
+
+    return model, tokenizer
+
+
+def load_peft_with_tokenizer(
+    base_model_name: str = BASE_MODEL_NAME, peft_model_path: str = BEST_PEFT_MODEL_NAME
+):
+    model = load_peft_model(base_model_name, peft_model_path)
+    tokenizer = load_tokenizer(base_model_name)
 
     return model, tokenizer
 
