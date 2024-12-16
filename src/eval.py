@@ -5,7 +5,7 @@ from model import (
     load_model_with_tokenizer,
     generate_model_output,
     get_models,
-    get_peft_model,
+    load_peft_model,
 )
 from utils import dash_line, BASE_MODEL_NAME
 
@@ -58,7 +58,7 @@ def main():
     for model_path in models:
         print(model_path)
 
-        peft_model = get_peft_model(BASE_MODEL_NAME, model_path)
+        peft_model = load_peft_model(BASE_MODEL_NAME, model_path)
         val_outputs = generate_model_outputs(peft_model, tokenizer, val_dataset)
         rouge_score = evaluate_rouge(val_outputs, val_dataset["summary"])
 
