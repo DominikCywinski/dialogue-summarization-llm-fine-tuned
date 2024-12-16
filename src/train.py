@@ -3,7 +3,7 @@ from peft import LoraConfig, get_peft_model, TaskType
 from itertools import product
 
 from dataset import get_train_dataset, tokenize_dataset
-from model import load_base_model, load_tokenizer
+from model import load_model_with_tokenizer
 
 
 # Train model with provided hyperparameters
@@ -58,8 +58,7 @@ def train_with_params(
 def train_with_params_lists(
     lora_r_vals, lora_alpha_vals, learning_rate_vals, num_train_epochs_vals
 ):
-    base_model = load_base_model()
-    tokenizer = load_tokenizer()
+    base_model, tokenizer = load_model_with_tokenizer()
     train_dataset = get_train_dataset()
     tokenized_dataset = tokenize_dataset(train_dataset, tokenizer)
     hyperparams_combinations = list(
